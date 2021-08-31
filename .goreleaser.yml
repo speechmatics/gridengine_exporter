@@ -1,0 +1,29 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: ./cmd/gridengine_exporter
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+nfpms:
+  - maintainer: Speechmatics <engineering-services-team@speechmatics.com>
+    formats:
+      - deb
+    description: Prometheus exporter for gridengine
+    contents:
+      - src: init/gridengine_exporter.service
+        dst: /usr/lib/systemd/system/gridengine_exporter.service
+        type: config
+    scripts:
+      postinstall: scripts/postinstall.sh
+      preremove: scripts/preremove.sh
+      postremove: scripts/postremove.sh
+archives:
+  - replacements:
+      linux: Linux
+      386: i386
+      amd64: x86_64
+changelog:
+  skip: true

@@ -1,0 +1,14 @@
+[Unit]
+Description=Gridengine Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=root
+Group=root
+Type=simple
+Restart=on-failure
+ExecStart=/usr/local/bin/gridengine_exporter
+
+[Install]
+WantedBy=multi-user.target
