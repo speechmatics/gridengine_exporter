@@ -2,10 +2,6 @@
 
 Prometheus Exporter for Grid Engine.
 
-## Options
-
-
-
 ## Metrics
 
 | Metric Name          | Type  | Description                                                                                           |
