@@ -77,23 +77,22 @@ func stateStrToState(state string) State {
 		"C": CalenderSuspend,
 		"u": Unknown,
 	}
-    var stateList [] string
-    for _, x := range(state) {
+	var stateList [] string
+	for _, x := range(state) {
 		stateList = append(stateList,string(x))
- 
-  }
-    var MapKeys []string
-    for k := range stateMap {
-        MapKeys = append(MapKeys,k)
-    }  
-    var slice = strings.Join(MapKeys, " ")
-    var stateValue [] string
-    for _,b := range stateList{
-        if strings.ContainsAny (b, slice) {
-            stateValue = append(stateValue,string(stateMap[b]))
-    }
-    }
-    var sliceValues = strings.Join(stateValue, ", ")
+	}
+	var MapKeys []string
+	for k := range stateMap {
+		MapKeys = append(MapKeys,k)
+	}  
+	var slice = strings.Join(MapKeys, " ")
+	var stateValue [] string
+	for _,b := range stateList{
+		if strings.ContainsAny (b, slice) {
+			stateValue = append(stateValue,string(stateMap[b]))
+		}
+	}
+	var sliceValues = strings.Join(stateValue, ", ")
 	return State(sliceValues)
 }
 
