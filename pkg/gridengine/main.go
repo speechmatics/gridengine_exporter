@@ -78,6 +78,9 @@ func stateStrToState(state string) State {
 		"u": Unknown,
 	}
 	var stateList [] string
+	if state == ""{
+            return stateMap[state]
+        }
 	for _, x := range(state) {
 		stateList = append(stateList,string(x))
 	}
