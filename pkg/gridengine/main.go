@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os/exec"
 	"strconv"
+	"strings"
 	"time"
 
 	xmltypes "github.com/speechmatics/gridengine_exporter/pkg/xml"
