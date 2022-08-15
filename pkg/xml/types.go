@@ -9,6 +9,7 @@ type Job struct {
 	Owner        string   `xml:"JB_owner"`
 	State        string   `xml:"state"`
 	Slots        int      `xml:"slots"`
+	Tasks        string   `xml:"tasks,omitempty"`
 	Priority     float32  `xml:"JAT_prio"`
 	StartTimeStr string   `xml:"JAT_start_time"`
 }

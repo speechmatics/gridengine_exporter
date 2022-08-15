@@ -35,6 +35,7 @@ type Job struct {
 	Owner     string
 	State     string
 	Slots     int
+	Tasks     string
 	Priority  float32
 	StartTime time.Time
 }
@@ -78,22 +79,22 @@ func stateStrToState(state string) State {
 		"C": CalenderSuspend,
 		"u": Unknown,
 	}
-	var stateList [] string
-	if state == ""{
-            return stateMap[state]
-        }
-	for _, x := range(state) {
-		stateList = append(stateList,string(x))
+	var stateList []string
+	if state == "" {
+		return stateMap[state]
+	}
+	for _, x := range state {
+		stateList = append(stateList, string(x))
 	}
 	var MapKeys []string
 	for k := range stateMap {
-		MapKeys = append(MapKeys,k)
-	}  
+		MapKeys = append(MapKeys, k)
+	}
 	var slice = strings.Join(MapKeys, " ")
-	var stateValue [] string
-	for _,b := range stateList{
-		if strings.ContainsAny (b, slice) {
-			stateValue = append(stateValue,string(stateMap[b]))
+	var stateValue []string
+	for _, b := range stateList {
+		if strings.ContainsAny(b, slice) {
+			stateValue = append(stateValue, string(stateMap[b]))
 		}
 	}
 	var sliceValues = strings.Join(stateValue, ", ")
@@ -138,15 +139,24 @@ func processQueues(qqueues []xmltypes.HostQueue, hostname string, jobs JobsMap) 
 
 func processJobs(qjobs []xmltypes.Job) []Job {
 	jobs := make([]Job, len(qjobs))
-
+	var jobNumMultiplier int
 	for i, qjob := range qjobs {
-
+		if strings.Contains(qjob.Tasks, "-") {
+			splittedTasks := strings.Split(qjob.Tasks, ":")[0]
+			splittedTasksStartStop := strings.Split(splittedTasks, "-")
+			taskStart, _ := strconv.Atoi(splittedTasksStartStop[0])
+			taskEnd, _ := strconv.Atoi(splittedTasksStartStop[1])
+			jobNumMultiplier = taskEnd - taskStart
+		} else {
+			jobNumMultiplier = 1
+		}
 		job := Job{
 			Number:   qjob.Number,
 			Name:     qjob.Name,
 			Owner:    qjob.Owner,
 			State:    qjob.State,
-			Slots:    qjob.Slots,
+			Slots:    qjob.Slots * jobNumMultiplier,
+			Tasks:    qjob.Tasks,
 			Priority: qjob.Priority,
 		}
 
