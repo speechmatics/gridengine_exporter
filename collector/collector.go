@@ -59,7 +59,7 @@ func (collector *GridengineCollector) Describe(ch chan<- *prometheus.Desc) {
 }
 
 func (collector *GridengineCollector) Collect(ch chan<- prometheus.Metric) {
-	hosts, pendingJobs, err := gridengine.GetHostQueuesJobs(collector.Filter)
+	hosts, pendingJobs, err := gridengine.GetHostQueuesJobs()
 	if err != nil {
 		log.Printf("failed to get gridengine data: %v", err)
 		return

@@ -166,15 +166,8 @@ func processJobs(qjobs []xmltypes.Job) []Job {
 	return jobs
 }
 
-func GetHostQueuesJobs(filter string) (map[string]Host, []Job, error) {
-	if len(filter) == 0 {
-		filter = "*"
-	}
-
+func GetHostQueuesJobs() (map[string]Host, []Job, error) {
 	qhostCmd := exec.Command("qhost", "-q", "-xml")
-	if filter != "*" {
-		qhostCmd.Args = append(qhostCmd.Args, "-h", filter)
-	}
 	qhostRawXml, err := qhostCmd.Output()
 	if err != nil {
 		return nil, nil, fmt.Errorf("qhost returned non zero: %v", err)
@@ -186,7 +179,7 @@ func GetHostQueuesJobs(filter string) (map[string]Host, []Job, error) {
 		return nil, nil, fmt.Errorf("error parsing qhost xml: %v", err)
 	}
 
-	qstatRawXml, err := exec.Command("qstat", "-u", "*", "-q", "*@"+filter, "-xml", "-f").Output()
+	qstatRawXml, err := exec.Command("qstat", "-u", "*", "-xml", "-f").Output()
 	if err != nil {
 		return nil, nil, fmt.Errorf("qstat returned non zero: %v", err)
 	}
